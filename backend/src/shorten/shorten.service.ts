@@ -38,6 +38,7 @@ export class ShortenService {
             ...createShortenDto,
             shortUrl: nanoid(8),
         });
+        console.log(shorten)
         return shorten
     }
 
