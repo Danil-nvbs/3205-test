@@ -11,7 +11,9 @@ export class ShortenController {
 
     @Post('shorten')
     async createShorten(@Body(ValidationPipe) createShortenDto: CreateShortenDto) {
-        return await this.shortenService.createShorten(createShortenDto);
+        let result = await this.shortenService.createShorten(createShortenDto); 
+        console.log(result)
+        return result
     }
 
     @Get(':shortUrl')
