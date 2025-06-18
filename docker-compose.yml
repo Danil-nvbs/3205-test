@@ -9,7 +9,7 @@ services:
       - "3001:3001"
     environment:
       PG_HOST: postgres
-      PG_PORT: 5431
+      PG_PORT: 5432
       PG_USER: postgres
       PG_PASSWORD: postgres
       PG_DB_NAME: 3205-test
