@@ -34,10 +34,11 @@ export class ShortenService {
     }
 
     async createShorten(createShortenDto: CreateShortenDto): Promise<Shorten> {
-        return await this.shorten.create({
+        const shorten = await this.shorten.create({
             ...createShortenDto,
             shortUrl: nanoid(8),
         });
+        return shorten
     }
 
     async getShortUrlInfo(getShortenInfo: GetShortenInfoDto) {
