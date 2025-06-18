@@ -1,10 +1,6 @@
-import { Controller, Get, Post, Param, Redirect, Body, Req, Ip, Delete, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Redirect, Body, Ip, Delete, ValidationPipe } from '@nestjs/common';
 import { ShortenService } from './shorten.service';
-import { CreateShortenDto } from './dto/create-shorten.dto';
-import { Request } from 'express';
-import { GetShortenInfo } from './dto/get-shorten-info.dto';
-import { DeleteShortenDto } from './dto/delete-shorten.dto';
-import { GetShortenAnalyticsDto } from './dto/get-shorten-analytics.dto';
+import { CreateShortenDto, DeleteShortenDto, GetShortenAnalyticsDto, GetShortenInfoDto } from './dto/index';
 
 
 @Controller()
@@ -30,9 +26,9 @@ export class ShortenController {
 
     @Get('info/:shortUrl')
     async getShortUrlInfo(
-        @Param(ValidationPipe) getShortenInfo: GetShortenInfo,
+        @Param(ValidationPipe) getShortenInfoDto: GetShortenInfoDto,
     ) {
-        return await this.shortenService.getShortUrlInfo(getShortenInfo)         
+        return await this.shortenService.getShortUrlInfo(getShortenInfoDto)         
     }
 
     @Delete('delete/:shortUrl')

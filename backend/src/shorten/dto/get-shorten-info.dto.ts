@@ -1,6 +1,6 @@
-import { IsDate, IsOptional, IsString, IsUrl, MaxLength, MinDate } from "class-validator";
+import { IsString } from "class-validator";
 
-export class GetShortenInfo {
+export class GetShortenInfoDto {
     @IsString()
     shortUrl: string;
 }

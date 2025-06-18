@@ -3,11 +3,9 @@ import { InjectModel } from '@nestjs/sequelize';
 import { nanoid } from 'nanoid';
 import { Shorten } from './models/shorten.model';
 import { ShortenLog } from './models/shorten-logs.model';
-import { CreateShortenDto } from './dto/create-shorten.dto';
 import { Op, Sequelize } from 'sequelize';
-import { GetShortenInfo } from './dto/get-shorten-info.dto';
-import { DeleteShortenDto } from './dto/delete-shorten.dto';
-import { GetShortenAnalyticsDto } from './dto/get-shorten-analytics.dto';
+import { CreateShortenDto, DeleteShortenDto, GetShortenAnalyticsDto, GetShortenInfoDto } from './dto/index';
+
 
 @Injectable()
 export class ShortenService {
@@ -42,7 +40,7 @@ export class ShortenService {
         });
     }
 
-    async getShortUrlInfo(getShortenInfo: GetShortenInfo) {
+    async getShortUrlInfo(getShortenInfo: GetShortenInfoDto) {
         let shorten = await this.shorten.findOne({
             where: { shortUrl: getShortenInfo.shortUrl },
             attributes: [
@@ -73,19 +71,17 @@ export class ShortenService {
                 model: ShortenLog,
                 limit: 5,
                 order: [['createdAt', 'DESC']],
-                attributes: ['ip_address']
+                attributes: ['ip_address'],
             }],
             attributes: [
                 [Sequelize.literal('(SELECT COUNT(*) FROM shorten_logs WHERE shorten_logs.shorten_id = "Shorten".id)'), 'clickCount'],
-                
-
-            ]
+            ],
         });
 
         if (!shorten) throw new HttpException('Ссылка не существует', HttpStatus.BAD_REQUEST);
         return {
             clickCount: Number(shorten.get('clickCount')),
-            lastClicksIps: shorten.logs.map(log => log.ip_address)
+            lastClicksIps: shorten.logs.map(log => log.ip_address),
         };
     }
 }
