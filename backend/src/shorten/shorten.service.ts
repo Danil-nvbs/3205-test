@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { nanoid } from 'nanoid';
 import { Shorten } from './models/shorten.model';
 import { ShortenLog } from './models/shorten-logs.model';
 import { Op, Sequelize } from 'sequelize';
 import { CreateShortenDto, DeleteShortenDto, GetShortenAnalyticsDto, GetShortenInfoDto } from './dto/index';
+import { nanoid } from 'nanoid/async';
 
 @Injectable()
 export class ShortenService {
@@ -37,7 +37,7 @@ export class ShortenService {
     async createShorten(createShortenDto: CreateShortenDto): Promise<Shorten> {
         const shorten = await this.shorten.create({
             ...createShortenDto,
-            shortUrl: nanoid(8),
+            shortUrl: await nanoid(8),
         });
         this.logger.log(`Создана ссылка ${shorten.shortUrl}`)
         return shorten

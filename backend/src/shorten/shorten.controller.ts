@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Param, Redirect, Body, Ip, Delete, ValidationPipe } from '@nestjs/common';
 import { ShortenService } from './shorten.service';
 import { CreateShortenDto, DeleteShortenDto, GetShortenAnalyticsDto, GetShortenInfoDto } from './dto/index';
-
+import { Shorten } from './models/shorten.model';
 
 @Controller()
 export class ShortenController {
@@ -10,7 +10,7 @@ export class ShortenController {
     ) {}
 
     @Post('shorten')
-    async createShorten(@Body(ValidationPipe) createShortenDto: CreateShortenDto) {
+    async createShorten(@Body(ValidationPipe) createShortenDto: CreateShortenDto): Promise<Shorten> {
         return await this.shortenService.createShorten(createShortenDto); 
     }
 

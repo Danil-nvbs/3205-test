@@ -6,9 +6,9 @@ import { Shorten } from './models/shorten.model';
 import { ShortenLog } from './models/shorten-logs.model';
 
 @Module({
-  controllers: [ShortenController],
-  providers: [ShortenService],
-  imports: [SequelizeModule.forFeature([ Shorten, ShortenLog ])]
+    controllers: [ShortenController],
+    providers: [ShortenService],
+    imports: [SequelizeModule.forFeature([ Shorten, ShortenLog ])]
 })
 
 export class ShortenModule {}

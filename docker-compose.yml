@@ -17,6 +17,7 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
+    profiles: ["prod"]
 
   postgres:
     image: postgres:16-alpine
@@ -35,6 +36,7 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    profiles: ["prod"]
 
   frontend:
     build:
@@ -45,6 +47,43 @@ services:
       - "80:80"
     depends_on:
       - backend
+    profiles: ["prod"]
+
+  backend-test:
+    build:
+      context: ./backend
+    container_name: e2e-tests
+    command: npm run test:e2e
+    environment:
+      PG_HOST: postgres-test
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      PG_DB_NAME: 3205-test-e2e
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    profiles: ["test"]
+
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: postgres-test
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: 3205-test-e2e
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    profiles: ["test"]
 
 volumes:
   postgres_data:
+  postgres_data_test:
