@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IShorten, IShortenAnalytics, IShortenInfo } from "../types/shorten";
 
-const API_URL = "http://localhost:3001";
+const API_URL = `${window.location.protocol}//${window.location.hostname}:3001`;
 
 export const createShortLink = async (data: {
     originalUrl: string;
