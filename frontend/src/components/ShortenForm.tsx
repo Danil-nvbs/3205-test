@@ -32,7 +32,6 @@ export const ShortenForm = () => {
           setError("");
     } catch (err: any) {
         setNewShorten(null)
-        console.log(err?.response?.data?.message.join('\n'))
         setError(err?.response?.data?.message?.join('; ')|| 'Неизвестная ошибка');
     };
   };

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { nanoid } from 'nanoid';
 import { Shorten } from './models/shorten.model';
@@ -6,13 +6,14 @@ import { ShortenLog } from './models/shorten-logs.model';
 import { Op, Sequelize } from 'sequelize';
 import { CreateShortenDto, DeleteShortenDto, GetShortenAnalyticsDto, GetShortenInfoDto } from './dto/index';
 
-
 @Injectable()
 export class ShortenService {
     constructor(
         @InjectModel(Shorten) private shorten: typeof Shorten,
         @InjectModel(ShortenLog) private shortenLog: typeof ShortenLog,
     ) {}
+
+    private readonly logger = new Logger(ShortenService.name)
 
     async getByShortUrl({ shortUrl, clientIp }: {shortUrl: string, clientIp: string}): Promise<string> {
         let shorten = await this.shorten.findOne({
@@ -38,7 +39,7 @@ export class ShortenService {
             ...createShortenDto,
             shortUrl: nanoid(8),
         });
-        console.log(shorten)
+        this.logger.log(`Создана ссылка ${shorten.shortUrl}`)
         return shorten
     }
 
