@@ -51,6 +51,7 @@ export const ShortenActions = () => {
             value={shortUrl}
             onChange={(e) => setShortUrl(e.target.value)}
             fullWidth
+            required
             sx={{ mb: 2 }}
         />
 
